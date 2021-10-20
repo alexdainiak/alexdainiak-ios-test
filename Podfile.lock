@@ -1,0 +1,20 @@
+PODS:
+  - Kingfisher (7.1.1)
+  - Swinject (2.8.1)
+
+DEPENDENCIES:
+  - Kingfisher
+  - Swinject
+
+SPEC REPOS:
+  trunk:
+    - Kingfisher
+    - Swinject
+
+SPEC CHECKSUMS:
+  Kingfisher: f738f9c4a3415823b8e2985d10aa2d6a9f37bc4d
+  Swinject: 97112918bd7e0785dc2df7036213f3c8cbba6586
+
+PODFILE CHECKSUM: 9000308280bb449cac6e812a6376e86590519336
+
+COCOAPODS: 1.11.2

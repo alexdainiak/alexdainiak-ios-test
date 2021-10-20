@@ -18,3 +18,5 @@ struct RecipeDto: Codable {
         case preparationMinutes = "preparation_minutes"
     }
 }
+
+extension RecipeDto: Recipe {}
