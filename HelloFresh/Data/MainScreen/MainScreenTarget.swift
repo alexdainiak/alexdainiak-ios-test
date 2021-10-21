@@ -25,15 +25,19 @@ enum MainScreenTarget: BaseTarget {
     var path: String {
         switch self {
         case .getRecipes:
-            return "recipes_v3.json"
+            return "/recipes_v3.json"
         }
     }
     
-    var method: String {
+    var method: Method {
         switch self {
         case .getRecipes:
-            return "GET"
+            return .GET
         }
+    }
+    
+    var conectionType: ConectionType {
+        .stub
     }
 }
 

@@ -13,9 +13,10 @@ class MainScreenViewController: UIViewController {
     
     private enum Consts {
         static let inset: CGFloat = 16
+        static let topInset: CGFloat = 8
         static let backgroundColor = UIColor.white
         static let title = "Recipes"
-        static let cellId = "RecipeCell"
+        static let cellId = String(describing: RecipeCell.self)
     }
 
     
@@ -35,13 +36,14 @@ class MainScreenViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(RecipeCell.self, forCellReuseIdentifier: Consts.cellId)
+        tableView.separatorStyle = .none
         
         return tableView
     }()
     
     // MARK: - Initializable
     
-    private let viewModel: MainScreenViewModel
+    private var viewModel: MainScreenViewModel
     
     // MARK: - Init
     
@@ -51,6 +53,7 @@ class MainScreenViewController: UIViewController {
         
         setupSubviews()
         addedRefreshControl()
+        tableView.register(RecipeCell.self, forCellReuseIdentifier: Consts.cellId)
     }
     
     @available(*, unavailable)
@@ -60,19 +63,39 @@ class MainScreenViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         title = Consts.title
         view.backgroundColor = Consts.backgroundColor
+        
+        binding()
+        
+        viewModel.loadRecipes()
     }
     
     // MARK: - Private methods
+    
+    private func binding() {
+        viewModel.updateView = { [weak self] in
+            self?.tableView.reloadData()
+            self?.refreshControl.endRefreshing()
+        }
+        
+        viewModel.showAlert = { [weak self] message in
+            self?.showAlert(message)
+        }
+    }
     
     private func addedRefreshControl() {
         refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
         tableView.refreshControl = refreshControl
     }
     
-    @objc private func refresh() {
+    private func showAlert(_ message: String) {
         
+    }
+    
+    @objc private func refresh() {
+        viewModel.loadRecipes()
     }
     
     private func setupSubviews() {
@@ -89,7 +112,7 @@ class MainScreenViewController: UIViewController {
                 constant: Consts.inset
             ),
             tableView.bottomAnchor.constraint(
-                equalTo: layoutGuide.bottomAnchor,
+                equalTo: view.bottomAnchor,
                 constant: -Consts.inset
             ),
             tableView.trailingAnchor.constraint(
@@ -106,6 +129,8 @@ extension MainScreenViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Consts.cellId, for: indexPath) as! RecipeCell
+        cell.configure(recipe: viewModel.items[indexPath.row])
+        
         return cell
     }
 }

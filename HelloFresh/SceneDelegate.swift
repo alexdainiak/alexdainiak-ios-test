@@ -20,7 +20,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         let assembler = Assembler([ApplicationCoordinatorAssembly()])
         let navigationController = UINavigationController()
-        navigationController.navigationBar.prefersLargeTitles = true
+        navigationController.navigationBar.prefersLargeTitles = false
+        navigationController.navigationBar.setBackgroundImage(UIImage(), for:.default)
+        navigationController.navigationBar.shadowImage = UIImage()
+        navigationController.navigationBar.layoutIfNeeded()
         applicationCoordinator = assembler.resolver.resolve(
             ApplicationCoordinator.self,
             arguments: assembler,

@@ -7,6 +7,7 @@
 
 import Swinject
 
+/// Assembler of MainScreen data layer with RecipesRepository
 public class MainScreenDataAssembly: Assembly {
     
     public init() {}

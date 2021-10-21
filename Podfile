@@ -9,6 +9,6 @@ target 'HelloFresh' do
 
    pod 'Kingfisher'
    pod 'Swinject'
-
+   pod 'SnapKit'
 
 end
