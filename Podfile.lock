@@ -1,0 +1,24 @@
+PODS:
+  - Kingfisher (7.1.1)
+  - SnapKit (5.0.1)
+  - Swinject (2.8.1)
+
+DEPENDENCIES:
+  - Kingfisher
+  - SnapKit
+  - Swinject
+
+SPEC REPOS:
+  trunk:
+    - Kingfisher
+    - SnapKit
+    - Swinject
+
+SPEC CHECKSUMS:
+  Kingfisher: f738f9c4a3415823b8e2985d10aa2d6a9f37bc4d
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  Swinject: 97112918bd7e0785dc2df7036213f3c8cbba6586
+
+PODFILE CHECKSUM: 72c7fd9f2a48a8d66c6092379dc677f7dc39e332
+
+COCOAPODS: 1.11.2
