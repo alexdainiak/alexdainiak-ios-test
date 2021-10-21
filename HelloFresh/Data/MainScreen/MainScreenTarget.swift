@@ -8,6 +8,8 @@
 enum MainScreenTarget: BaseTarget {
     case getRecipes
     
+    final class BundleToken {}
+    
     var scheme: String {
         switch self {
         case .getRecipes:
@@ -37,7 +39,11 @@ enum MainScreenTarget: BaseTarget {
     }
     
     var conectionType: ConectionType {
-        .stub
+        .network
+    }
+    
+    var sampleData: Data? {
+         loadDataInJSONFile(fileName: "recipesStub", bundleToken: BundleToken.self)
     }
 }
 

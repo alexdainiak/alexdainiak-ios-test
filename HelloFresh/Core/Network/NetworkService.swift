@@ -6,18 +6,30 @@
 //
 import Foundation
 
+protocol URLSessionProtocol {
+    func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
+}
+
+extension URLSession: URLSessionProtocol {}
+
 protocol NetworkService {
-    func request<T: Codable>(api: BaseTarget, completion: @escaping (Result<T, AppError>) -> Void)
+    func getRecipes(completion: @escaping (Result<[RecipeDto], AppError>) -> Void)
+   
 }
 
 final class NetworkServiceImpl: NetworkService {
-    var sampleData: Data {
-        
-        guard let path = Bundle.main.path(forResource: "recipesStub", ofType: "json")  else { return Data() }
-        guard let data = try? Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe) else { return Data() }
-        
-        return data
+    var urlSession: URLSessionProtocol
+    
+    init(urlSession: URLSessionProtocol) {
+        self.urlSession = urlSession
     }
+    
+    func getRecipes(completion: @escaping (Result<[RecipeDto], AppError>) -> Void) {
+        request(api: MainScreenTarget.getRecipes, completion: completion)
+    }
+}
+
+extension NetworkServiceImpl {
     
     func request<T: Codable>(api: BaseTarget, completion: @escaping (Result<T, AppError>) -> Void) {
         var components = URLComponents()
@@ -30,12 +42,13 @@ final class NetworkServiceImpl: NetworkService {
         urlRequest.httpMethod = api.method.rawValue
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: .main)
-        
         if api.conectionType == .stub {
-            
             do {
-                let responseObject = try JSONDecoder().decode(T.self, from: sampleData)
+                guard let data = api.sampleData else {
+                    completion(.failure(.noData))
+                    return
+                }
+                let responseObject = try JSONDecoder().decode(T.self, from: data)
                 
                 completion(.success(responseObject))
             } catch {
@@ -45,7 +58,7 @@ final class NetworkServiceImpl: NetworkService {
             return
         }
         
-        let dataTask = session.dataTask(with: urlRequest) { data, response, error in
+        let dataTask = urlSession.dataTask(with: urlRequest) { data, response, error in
             
             if let appError = AppError(data: data, response: response, error: error) {
                 completion(.failure(appError))
@@ -54,7 +67,11 @@ final class NetworkServiceImpl: NetworkService {
             }
             
             do {
-                let responseObject = try JSONDecoder().decode(T.self, from: data!)
+                guard let data = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                let responseObject = try JSONDecoder().decode(T.self, from: data)
                 
                 completion(.success(responseObject))
             } catch {

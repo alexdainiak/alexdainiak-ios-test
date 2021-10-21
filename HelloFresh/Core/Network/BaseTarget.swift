@@ -22,7 +22,22 @@ protocol BaseTarget {
     /// The HTTP method used in the request
     var method: Method { get }
     
+    /// Using stub or network
     var conectionType: ConectionType { get }
+    
+    /// The dta of stub sample. Using in case ConectionType.stub
+    var sampleData: Data? { get }
+}
+
+extension BaseTarget {
+    func loadDataInJSONFile(fileName: String, bundleToken: AnyClass) -> Data? {
+        let bundle = Bundle(for: bundleToken)
+        guard let filePath = bundle.path(forResource: fileName, ofType: "json"),
+              let data = try? Data(contentsOf: URL(fileURLWithPath: filePath)) else {
+            return nil
+        }
+        return data
+    }
 }
 
 

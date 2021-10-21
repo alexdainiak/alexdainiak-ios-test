@@ -15,7 +15,7 @@ final class RecipesRepositoryImpl: RecipesRepository {
     }
     
     func getRecipes(completion: @escaping (Result<[RecipeDto], AppError>) -> Void) {
-        netorkService.request(api: MainScreenTarget.getRecipes) { (result: Result<[RecipeDto], AppError>) in
+        netorkService.getRecipes { (result: Result<[RecipeDto], AppError>) in
             completion(result)
         }
     }

@@ -15,7 +15,8 @@ public class MainScreenDataAssembly: Assembly {
     public func assemble(container: Container) {
         container.register(RecipesRepository.self) { _ in
  
-            return RecipesRepositoryImpl(netorkService: NetworkServiceImpl())
+            let session = URLSession(configuration: .default, delegate: nil, delegateQueue: .main)
+            return RecipesRepositoryImpl(netorkService: NetworkServiceImpl(urlSession: session))
         }
     }
 }

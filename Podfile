@@ -12,3 +12,7 @@ target 'HelloFresh' do
    pod 'SnapKit'
 
 end
+
+target 'HelloFreshTests' do
+  inherit! :search_paths
+end
