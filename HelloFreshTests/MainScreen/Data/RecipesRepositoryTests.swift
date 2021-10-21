@@ -25,6 +25,7 @@ class RecipesRepositoryTests: XCTestCase {
     
     override func tearDown() {
         recipesRepository = nil
+        networkServiceMock = nil
         super.tearDown()
     }
     
@@ -115,13 +116,13 @@ class RecipesRepositoryTests: XCTestCase {
 extension RecipesRepositoryTests {
     static var resipesSuccessMock: Result<[RecipeDto], AppError> {
         let recipes: [RecipeDto] = [
-        RecipeDto(
-            id: "1",
-            name: "foo",
-            headline: "bar",
-            image: "image",
-            preparationMinutes: 22
-        )
+            RecipeDto(
+                id: "1",
+                name: "foo",
+                headline: "bar",
+                image: "image",
+                preparationMinutes: 22
+            )
         ]
         
         return Result.success(recipes)
@@ -135,4 +136,4 @@ extension RecipesRepositoryTests {
         return Result.failure(AppError.noData)
     }
 }
-    
+

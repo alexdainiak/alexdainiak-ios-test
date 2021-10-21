@@ -24,6 +24,7 @@ class NetworkServiceTests: XCTestCase {
     
     override func tearDown() {
         networkService = nil
+        mockURLSession = nil
         super.tearDown()
     }
     
@@ -54,7 +55,7 @@ class NetworkServiceTests: XCTestCase {
     
     func testEmptyDataRecipeResponse() {
         networkService = nil
-        let mockURLSession = MockURLSession(data: nil, urlResponse: nil, responseError: nil)
+        mockURLSession = MockURLSession(data: nil, urlResponse: nil, responseError: nil)
         networkService = NetworkServiceImpl(urlSession: mockURLSession)
         let recipesExpectation = expectation(description: "recipesExpectation")
         var recipes: [RecipeDto]?
@@ -84,7 +85,7 @@ class NetworkServiceTests: XCTestCase {
     
     func testInvalidJsonResponse() {
         networkService = nil
-        let mockURLSession = MockURLSession(data: Data(), urlResponse: nil, responseError: nil)
+        mockURLSession = MockURLSession(data: Data(), urlResponse: nil, responseError: nil)
         networkService = NetworkServiceImpl(urlSession: mockURLSession)
         let recipesExpectation = expectation(description: "recipesExpectation")
         var recipes: [RecipeDto]?
@@ -115,7 +116,7 @@ class NetworkServiceTests: XCTestCase {
     func testTransportErrorFromResponse() {
         networkService = nil
         let nsError = NSError(domain: "Foo error", code: 401, userInfo: [:])
-        let mockURLSession = MockURLSession(data: nil, urlResponse: nil, responseError: nsError)
+        mockURLSession = MockURLSession(data: nil, urlResponse: nil, responseError: nsError)
         networkService = NetworkServiceImpl(urlSession: mockURLSession)
         let recipesExpectation = expectation(description: "recipesExpectation")
         var recipes: [RecipeDto]?
@@ -147,7 +148,7 @@ class NetworkServiceTests: XCTestCase {
         networkService = nil
         let expectedStatusCode = 404
         let response = HTTPURLResponse(url: URL(string: "https://google.com")!, statusCode: expectedStatusCode, httpVersion: nil, headerFields: [:])
-        let mockURLSession = MockURLSession(data: nil, urlResponse: response, responseError: nil)
+        mockURLSession = MockURLSession(data: nil, urlResponse: response, responseError: nil)
         networkService = NetworkServiceImpl(urlSession: mockURLSession)
         let recipesExpectation = expectation(description: "recipesExpectation")
         var recipes: [RecipeDto]?

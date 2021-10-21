@@ -32,19 +32,24 @@ final class MainScreenViewModelImpl: MainScreenViewModel {
     // MARK: - Public methods
     
     func loadRecipes() {
-        recipesRepository.getRecipes { [weak self] result in
+        recipesRepository.getRecipes { [weak self] (result: Result<[RecipeDto], AppError>) in
             guard let self = self else { return }
             
             switch result {
                 case .success(let recipes):
                     self.items = recipes
-                    
-                    DispatchQueue.main.async {
-                        self.updateView?()
-                    }
+                    self.updateView?()
                     
                 case .failure(let error):
-                    DispatchQueue.main.async {
+                    if case .serverError(let statusCode) = error {
+                        self.showAlert?(String(statusCode).appending(" serverError code"))
+                    } else if case .decodingError = error {
+                        self.showAlert?("decodingError")
+                    } else if case .noData = error {
+                        self.showAlert?("noData")
+                    } else if case .transportError = error {
+                        self.showAlert?("transportError")
+                    } else {
                         self.showAlert?(error.localizedDescription)
                     }
             }

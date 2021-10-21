@@ -8,7 +8,7 @@
 import UIKit
 
 class MainScreenViewController: UIViewController {
-
+    
     // MARK: - Private properties
     
     private enum Consts {
@@ -17,8 +17,9 @@ class MainScreenViewController: UIViewController {
         static let backgroundColor = UIColor.white
         static let title = "Recipes"
         static let cellId = String(describing: RecipeCell.self)
+        static let noDataTitle = "No data loaded,\ntry to refresh please"
     }
-
+    
     
     private lazy var refreshControl = UIRefreshControl()
     
@@ -40,6 +41,8 @@ class MainScreenViewController: UIViewController {
         
         return tableView
     }()
+    
+    private var isLoading = false
     
     // MARK: - Initializable
     
@@ -70,19 +73,41 @@ class MainScreenViewController: UIViewController {
         binding()
         
         viewModel.loadRecipes()
+        isLoading = true
     }
     
     // MARK: - Private methods
     
     private func binding() {
         viewModel.updateView = { [weak self] in
-            self?.tableView.reloadData()
-            self?.refreshControl.endRefreshing()
+            guard let self = self else { return }
+            
+            self.isLoading = false
+            DispatchQueue.main.async {
+                self.refreshControl.endRefreshing()
+                self.tableView.backgroundView = nil
+                self.tableView.reloadData()
+            }
         }
         
         viewModel.showAlert = { [weak self] message in
-            self?.showAlert(message)
+            guard let self = self else { return }
+            
+            self.isLoading = false
+            DispatchQueue.main.async {
+                self.refreshControl.endRefreshing()
+                self.showAlert(message)
+                self.setBackgroundText()
+            }
         }
+    }
+    
+    private func setBackgroundText() {
+        let label = UILabel()
+        label.text = Consts.noDataTitle
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        tableView.backgroundView = label
     }
     
     private func addedRefreshControl() {
@@ -91,10 +116,15 @@ class MainScreenViewController: UIViewController {
     }
     
     private func showAlert(_ message: String) {
-        
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .cancel)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
     
     @objc private func refresh() {
+        guard !isLoading else { return }
+        isLoading = true
         viewModel.loadRecipes()
     }
     
