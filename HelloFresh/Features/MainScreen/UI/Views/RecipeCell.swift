@@ -40,7 +40,7 @@ final class RecipeCell: UITableViewCell {
     
     // MARK: - Private properties
     
-    private lazy var backView: UIView = {
+    private let backView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 12
@@ -50,7 +50,7 @@ final class RecipeCell: UITableViewCell {
         return view
     }()
     
-    private lazy var borderView: UIView = {
+    private let borderView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
         view.layer.cornerRadius = 12
@@ -60,7 +60,7 @@ final class RecipeCell: UITableViewCell {
         return view
     }()
     
-    private lazy var titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = Consts.Fonts.titleFont
         label.textColor = Consts.Colors.titleColor
@@ -70,7 +70,7 @@ final class RecipeCell: UITableViewCell {
         return label
     }()
     
-    private lazy var subtitleLabel: UILabel = {
+    private let subtitleLabel: UILabel = {
         let label = UILabel()
         label.font = Consts.Fonts.subtitleFont
         label.textColor = Consts.Colors.subtitleColor
@@ -80,7 +80,7 @@ final class RecipeCell: UITableViewCell {
         return label
     }()
     
-    private lazy var timeLabel: UILabel = {
+    private let timeLabel: UILabel = {
         let label = UILabel()
         label.font = Consts.Fonts.timeLabelFont
         label.textColor = Consts.Colors.timeLabelColor
@@ -89,7 +89,7 @@ final class RecipeCell: UITableViewCell {
         return label
     }()
     
-    private lazy var recipeImage: UIImageView = {
+    private let recipeImage: UIImageView = {
         $0.contentMode = .scaleAspectFill
         $0.clipsToBounds = true
         
@@ -130,7 +130,6 @@ final class RecipeCell: UITableViewCell {
         if let url = URL(string: recipe.image) {
             recipeImage.kf.setImage(with: url)
         }
-        
     }
     
     // MARK: - Private methods
@@ -144,13 +143,9 @@ final class RecipeCell: UITableViewCell {
         backView.addSubview(timeLabel)
         backView.addSubview(recipeImage)
         
-        contentView.snp.makeConstraints {
+        borderView.snp.makeConstraints {
             $0.left.right.equalToSuperview()
             $0.top.bottom.equalToSuperview().inset(Consts.Sizes.sInset)
-        }
-        
-        borderView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
         }
         
         backView.snp.makeConstraints {

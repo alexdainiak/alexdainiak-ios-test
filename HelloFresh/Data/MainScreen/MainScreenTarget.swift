@@ -27,7 +27,7 @@ enum MainScreenTarget: BaseTarget {
     var path: String {
         switch self {
         case .getRecipes:
-            return "/recipes_v3.json"
+            return "/ios/recipes_v3.json"
         }
     }
     
