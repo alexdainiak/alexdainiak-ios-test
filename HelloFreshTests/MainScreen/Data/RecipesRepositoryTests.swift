@@ -33,7 +33,7 @@ class RecipesRepositoryTests: XCTestCase {
         networkServiceMock = NetworkServiceMock(result: RecipesRepositoryTests.resipesSuccessMock)
         recipesRepository = RecipesRepositoryImpl(netorkService: networkServiceMock)
         let recipesExpectation = expectation(description: "recipesExpectation")
-        var recipes: [RecipeDto]?
+        var recipes: [Recipe]?
         
         recipesRepository.getRecipes { result in
             switch result {
@@ -56,7 +56,7 @@ class RecipesRepositoryTests: XCTestCase {
         networkServiceMock = NetworkServiceMock(result: RecipesRepositoryTests.resipesErrorMock)
         recipesRepository = RecipesRepositoryImpl(netorkService: networkServiceMock)
         let recipesExpectation = expectation(description: "recipesExpectation")
-        var recipes: [RecipeDto]?
+        var recipes: [Recipe]?
         var error: AppError?
         
         recipesRepository.getRecipes { result in
@@ -87,7 +87,7 @@ class RecipesRepositoryTests: XCTestCase {
         networkServiceMock = NetworkServiceMock(result: RecipesRepositoryTests.resipesNoDataErrorMock)
         recipesRepository = RecipesRepositoryImpl(netorkService: networkServiceMock)
         let recipesExpectation = expectation(description: "recipesExpectation")
-        var recipes: [RecipeDto]?
+        var recipes: [Recipe]?
         var error: AppError?
         
         recipesRepository.getRecipes { result in

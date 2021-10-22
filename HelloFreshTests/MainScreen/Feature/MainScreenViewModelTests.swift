@@ -48,7 +48,7 @@ class MainScreenViewModelTests: XCTestCase {
             XCTAssertEqual(self.mainScreenViewModel.items.count, 1)
             XCTAssertEqual(self.mainScreenViewModel.items.first?.name, "foo")
             XCTAssertTrue(didCallUpdateView, "Did not call viewModel.updateView")
-            XCTAssertFalse(didCallShowAlert, "Did call viewModel.updateView")
+            XCTAssertFalse(didCallShowAlert, "Did call viewModel.showAlert")
         }
     }
     
@@ -73,7 +73,7 @@ class MainScreenViewModelTests: XCTestCase {
         waitForExpectations(timeout: 1) { _ in
             XCTAssertTrue(self.mainScreenViewModel.items.isEmpty)
             XCTAssertFalse(didCallUpdateView, "Did call viewModel.updateView")
-            XCTAssertTrue(didCallShowAlert, "Did not call viewModel.updateView")
+            XCTAssertTrue(didCallShowAlert, "Did not call viewModel.showAlert")
         }
     }
     
@@ -98,14 +98,14 @@ class MainScreenViewModelTests: XCTestCase {
         waitForExpectations(timeout: 1) { _ in
             XCTAssertTrue(self.mainScreenViewModel.items.isEmpty)
             XCTAssertFalse(didCallUpdateView, "Did call viewModel.updateView")
-            XCTAssertTrue(didCallShowAlert, "Did not call viewModel.updateView")
+            XCTAssertTrue(didCallShowAlert, "Did not call viewModel.showAlert")
         }
     }
 }
 
 extension MainScreenViewModelTests {
-    static var resipesSuccessMock: Result<[RecipeDto], AppError> {
-        let recipes: [RecipeDto] = [
+    static var resipesSuccessMock: Result<[Recipe], AppError> {
+        let recipes: [Recipe] = [
             RecipeDto(
                 id: "1",
                 name: "foo",
@@ -118,11 +118,11 @@ extension MainScreenViewModelTests {
         return Result.success(recipes)
     }
     
-    static var resipesErrorMock: Result<[RecipeDto], AppError> {
+    static var resipesErrorMock: Result<[Recipe], AppError> {
         return Result.failure(AppError.serverError(statusCode: 403))
     }
     
-    static var resipesNoDataErrorMock: Result<[RecipeDto], AppError> {
+    static var resipesNoDataErrorMock: Result<[Recipe], AppError> {
         return Result.failure(AppError.noData)
     }
 }

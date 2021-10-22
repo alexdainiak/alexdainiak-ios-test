@@ -32,7 +32,7 @@ final class MainScreenViewModelImpl: MainScreenViewModel {
     // MARK: - Public methods
     
     func loadRecipes() {
-        recipesRepository.getRecipes { [weak self] (result: Result<[RecipeDto], AppError>) in
+        recipesRepository.getRecipes { [weak self] result in
             guard let self = self else { return }
             
             switch result {

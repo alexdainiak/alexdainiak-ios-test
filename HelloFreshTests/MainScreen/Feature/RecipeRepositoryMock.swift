@@ -9,13 +9,13 @@
 
 class RecipeRepositoryMock: RecipesRepository {
 
-    let result: Result<[RecipeDto], AppError>
+    let result: Result<[Recipe], AppError>
     
-    init(result: Result<[RecipeDto], AppError>) {
+    init(result: Result<[Recipe], AppError>) {
         self.result = result
     }
     
-    func getRecipes(completion: @escaping (Result<[RecipeDto], AppError>) -> Void) {
+    func getRecipes(completion: @escaping (Result<[Recipe], AppError>) -> Void) {
         completion(result)
     }
 }

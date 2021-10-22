@@ -14,9 +14,9 @@ final class RecipesRepositoryImpl: RecipesRepository {
         self.netorkService = netorkService
     }
     
-    func getRecipes(completion: @escaping (Result<[RecipeDto], AppError>) -> Void) {
+    func getRecipes(completion: @escaping (Result<[Recipe], AppError>) -> Void) {
         netorkService.getRecipes { (result: Result<[RecipeDto], AppError>) in
-            completion(result)
+            completion(result.map { $0 })
         }
     }
 }

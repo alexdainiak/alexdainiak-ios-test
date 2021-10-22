@@ -9,6 +9,6 @@ import Foundation
 
 
 protocol RecipesRepository {
-    func getRecipes(completion: @escaping (Result<[RecipeDto], AppError>) -> Void)
+    func getRecipes(completion: @escaping (Result<[Recipe], AppError>) -> Void)
 }
  
